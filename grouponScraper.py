@@ -8,7 +8,7 @@ from datetime import datetime
 
 LOCATIONS_LINK = 'http://www.groupon.com/noexit/all'
 MAX_PAGE_LOADS_PER_SECOND = 10
-DEFAULT_FILE_NAME = 'grouponData.tsv'
+DEFAULT_FILE_NAME = 'grouponData.csv'
 
 def extractLocs(link):
 	sock = urllib.urlopen(link)
@@ -96,7 +96,7 @@ def main():
 	else:
 		outFile = open(DEFAULT_FILE_NAME,'w')
 	outFile.write(str(datetime.now()) + '\n')
-	outFile.write('location\ttitle\tprice\tvalue\tnumBought\turl\n')
+	outFile.write('location,title,price,value,numBought,url\n')
 	
 	for loc in locs:
 		dealUrls,dealTitles = extractDealInfo(loc)
@@ -107,7 +107,7 @@ def main():
 			if (not price or not value):
 				print 'invalid: ' + dealUrls[i]
 				continue
-			outData = '%s\t%s\t%d\t%d\t%d\t%s' % (loc,dealTitles[i],price,value,numBought,dealUrls[i])
+			outData = '%s,%s,%d,%d,%d,%s' % (loc,dealTitles[i],price,value,numBought,dealUrls[i])
 			print outData
 			outFile.write(outData + '\n')
 			time.sleep(1.0 / MAX_PAGE_LOADS_PER_SECOND)
